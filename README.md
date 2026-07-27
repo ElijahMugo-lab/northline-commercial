@@ -3,6 +3,8 @@
 Landing page for a Nairobi commercial real estate firm. React 18 + Vite + Tailwind CSS v4,
 with Framer Motion for scroll and load transitions and lucide-react for icons.
 
+Live: <https://elijahmugo-lab.github.io/northline-commercial/>
+
 ## Running it
 
 ```bash
@@ -15,6 +17,28 @@ npm run preview  # serve the production build locally
 `npm run build` writes plain HTML, CSS and JS to `dist/`. That folder can be dropped on any
 static host (Netlify, Vercel, Cloudflare Pages, or a normal Apache/Nginx box). No server
 runtime required.
+
+## Deploying
+
+```bash
+npm run deploy
+```
+
+That builds and force-pushes `dist/` to the `gh-pages` branch, which GitHub Pages serves.
+
+The one thing to watch is `base` in `vite.config.js`. GitHub project sites live under
+`/<repo>/`, so it is set to `/northline-commercial/` and the built asset URLs carry that
+prefix. Two cases need it changed:
+
+- **Custom domain** (say `northlinecommercial.co.ke`) or any host serving from the root:
+  build with `BASE_PATH=/ npm run build`.
+- **Renamed repo**: update the default in `vite.config.js` to match the new name.
+
+Get this wrong and the page loads a blank white screen, because the HTML resolves but the JS
+and CSS 404. If that happens, view source and check the `src` and `href` prefixes.
+
+The `<link rel="canonical">` in `index.html` points at `northlinecommercial.co.ke`, the intended
+production domain. Update or remove it if that domain changes.
 
 ## Structure
 
