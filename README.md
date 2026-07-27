@@ -18,7 +18,7 @@ runtime required.
 
 ## Structure
 
-```
+```text
 index.html                     title, meta description, Open Graph, preconnects
 src/main.jsx                   entry point, loads self-hosted Inter
 src/index.css                  Tailwind import, design tokens, reduced-motion block
@@ -58,6 +58,32 @@ measures about 6:1. Keep that split if you retheme.
 
 Corner radius is `rounded-lg` everywhere. The only exception is circular icon wells and social
 buttons, which are `rounded-full`.
+
+**The hero is deliberately white, not gold.** A saturated gold sitting on dark video reads as
+neon, so the hero eyebrow, the hero CTA and the navbar CTA are white. Gold starts at the
+feature strip and carries the rest of the page. If you move gold back into the hero, check it
+against the video at full brightness first.
+
+## Responsive rules
+
+Verified at 320, 360, 390, 430, 744, 768, 820 landscape, 932 landscape, 1280 and 1440: no
+horizontal overflow, no text under 11px, no CTA wrapping to two lines, no tap target under
+44px, and the hero CTA above the fold at every one.
+
+Two rules are easy to break by accident:
+
+- **Landscape phones need a height query, not a width query.** Between roughly 640px and 900px
+  wide the `md:` breakpoint fires a 72px hero headline. A phone held sideways is that wide but
+  only ~375px tall, so the headline pushes the CTA off screen. `src/index.css` gates the hero's
+  type and spacing on `@media (max-height: 520px)` to catch this. Width breakpoints cannot see it.
+- **Inline text links need `min-h-11`.** "Learn More", "View Details", "Read More" and the footer
+  links are 20px tall as plain text, well under the 44px minimum touch target. They carry
+  `inline-flex min-h-11 items-center` with reduced top margin so the hit area grows without
+  changing the visual rhythm.
+
+The property and insight grids stay three-up from `md` (768px). At exactly 768px the cards are
+tight, around 220px wide with titles over two lines. Dropping to two columns would strand the
+third card alone in the second row, so three-up is the better of the two.
 
 ## Accessibility notes
 
