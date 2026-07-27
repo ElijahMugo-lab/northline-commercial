@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+/*
+  Northline Commercial design tokens.
+
+  Accent lock: gold is the only accent on the page. Two ramps exist for one
+  reason only, contrast:
+    --color-gold      #d4af37  used on dark surfaces (9.2:1 on --color-dark)
+    --color-gold-ink  #7d5e12  used for gold TEXT on white / gray-50 (6.0:1)
+  Never use --color-gold for small text on a light background.
+
+  Shape lock: every surface uses rounded-lg. The single documented exception
+  is circular icon wells (rounded-full) inside service cards and social links.
+*/
+@theme {
+  --color-gold: #d4af37;
+  --color-gold-soft: #e0c463;
+  --color-gold-ink: #7d5e12;
+  --color-gold-wash: #faf5e6;
+
+  --color-dark: #0b0e14;
+  --color-dark-raised: #162032;
+  --color-dark-line: #1e2a3d;
+
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+
+  --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #ffffff;
+    color: var(--color-gray-900);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Visible, brand-consistent keyboard focus on every interactive element. */
+  :where(a, button, input, textarea, select):focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@utility skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100%;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-gold);
+  color: var(--color-dark);
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: top 0.2s var(--ease-brand);
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+/*
+  Landscape phones and short windows.
+
+  Between roughly 640px and 900px wide the `md:` breakpoint fires a 72px hero
+  headline. On a phone held sideways the viewport is only ~375px tall, so that
+  headline pushes the CTAs below the fold. Width-based breakpoints cannot see
+  this, so gate on height instead and tighten the hero's type and rhythm.
+*/
+@media (max-height: 520px) {
+  .hero-copy {
+    padding-top: 4.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.6875rem;
+  }
+  .hero-copy h1 {
+    margin-top: 1rem;
+    font-size: 2.25rem;
+  }
+  .hero-lede {
+    margin-top: 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .hero-actions {
+    margin-top: 1.5rem;
+  }
+}
+
+/* MOTION_INTENSITY 6 requires an honest reduced-motion escape hatch.
+   Framer Motion components also branch on useReducedMotion(); this block
+   catches CSS transitions, the marquee-free hover zooms and smooth scroll. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
